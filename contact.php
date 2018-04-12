@@ -5,7 +5,7 @@
     <title>Contact</title>
     <script>
         function validateEmail(email)
-        {
+        {   //email regex
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         }
@@ -37,7 +37,7 @@
 $nameErr = $emailErr = $msgErr =  "";
 $name = $femail = $msg = "";
 $err = "not";
-
+//checks input against empty string
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["name"])) {
     $nameErr = "* Name is required";
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $msg = test_input($_POST["msg"]);
   }
 }
-
+//cleans data before inserting
 function test_input($data) {
   $data = trim($data);
   $data = stripslashes($data);
