@@ -158,16 +158,13 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "INSERT INTO Client_Info (Name, Email, OS, Browser, Referrer, Message)
-    VALUES ('$fname', '$email', '$user_os', '$user_browser', '$ref', '$message')";
-  
-    // use exec() because no results are returned
-    $conn->exec($sql);
+    $sql = $conn->prepare('INSERT INTO Client_Info (Name, Email, OS, Browser, Referrer, Message) VALUES (?,?,?,?,?,?)');
+    $sql->execute(array($fname, $email, $user_os, $user_browser, $ref, $message));
     echo "New record created successfully";
     }
 catch(PDOException $e)
     {
-    echo $sql . "<br>" . $e->getMessage();
+    echo "Error: " . "<br>" . $e->getMessage();
     }
 
 // use wordwrap() if lines are longer than 70 characters
