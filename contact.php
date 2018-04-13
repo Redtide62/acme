@@ -152,8 +152,11 @@ function getBrowser() {
 $user_os        = getOS();
 $user_browser   = getBrowser();
 
+//kill error messages
+ini_set('display_errors',0);
 
 //inserts information above into database
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
@@ -161,19 +164,18 @@ try {
     $sql = $conn->prepare('INSERT INTO Client_Info (Name, Email, OS, Browser, Referrer, Message) VALUES (?,?,?,?,?,?)');
     $sql->execute(array($fname, $email, $user_os, $user_browser, $ref, $message));
     echo "New record created successfully";
+    
+    //send email to input and self
+    $msg = wordwrap($msg,70);
+    mail("$email","My subject",$msg);
+    mail("greg.mcgilvray@gmail.com", "some_oneused_this",$msg." From: ".$email);
     }
 catch(PDOException $e)
     {
-    echo "Error: " . "<br>" . $e->getMessage();
+    echo "Something went wrong?";
+    mail('greg.mcgilvray@gmail.com', "error message", "Error: " . $e->getMessage());
     }
 
-// use wordwrap() if lines are longer than 70 characters
-$msg = wordwrap($msg,70);
-
-// send email
-mail("$email","My subject",$msg);
-mail("greg.mcgilvray@gmail.com", "some_oneused_this",$msg." From: ".$email);
-    
 $conn = null;
 }
 ?>
